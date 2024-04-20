@@ -1,0 +1,110 @@
+version: "3.0"
+
+set: ['e', 'u', 'pipefail']
+shopt: ['globstar']
+
+dotenv: ['.env']
+
+env:
+  TLD:
+    sh: git rev-parse --show-toplevel
+  APP:
+    sh: echo "${APP_NAME:-mvp}"
+  POETRY:
+    sh: "echo ${POETRY:-1.7.1}"
+  PY_VER:
+    sh: "echo ${PY_VER:-3.11.6}"
+  SCRIPT:
+  UNAME:
+    sh: "uname -s"
+
+vars:
+
+includes:
+  docker:
+    taskfile: ./taskfiles/docker.yml
+    aliases: ["docker"]
+  poetry:
+    taskfile: ./taskfiles/poetry.yml
+    aliases: ["poetry"]
+
+tasks:
+  print:
+    - |
+      echo -e "TLD:\t\t$TLD"
+      echo -e "APP:\t\t{{.APP}}"
+      echo -e "BUILD:\t\t{{.BUILD}}"
+      echo -e "COMPOSE_FILE:\t{{.COMPOSE_FILE}}"
+      echo -e "DOCKERFILE:\t{{.DOCKERFILE}}"
+      echo -e "PLATFORM:\t{{.PLATFORM}}"
+      echo -e "POETRY:\t\t{{.POETRY}}"
+      echo -e "PY_VER:\t\t{{.PY_VER}}"
+      echo -e "SCRIPT:\t\t{{.SCRIPT}}"
+      echo -e "REGISTRY:\t$REGISTRY"
+      echo -e "SERVICE:\t{{.SERVICE}}"
+      echo -e "TAG:\t\t${TAG}"
+      echo -e "USER_NAME:\t$USER_NAME"
+      echo -e "UNAME:\t\t$UNAME"
+
+  default:
+    desc: "Default task"
+    cmds:
+      - task --list
+
+  install:
+    desc: "Install project dependencies"
+    cmds:
+      - |
+        make install
+
+  pre-commit:
+    desc: "Run pre-commit hooks"
+    cmds:
+      - pre-commit run --all-files
+
+  checkbash:
+    desc: "Check bash scripts"
+    cmds:
+      - checkbashism -x {{.TLD}}/app/*.sh
+
+  update-deps:
+    desc: "Update dependencies"
+    cmds:
+      - |
+        poetry run poetry up 2>/dev/null
+        poetry update --lock --no-ansi
+
+  export-reqs:
+    desc: "Export requirements.txt"
+    summary: |
+      Export the project dependencies to a requirements.txt file.
+    cmds:
+      - |
+        poetry export -f requirements.txt \
+          --output {{.TLD}}/requirements.txt \
+          --without-hashes \
+          --no-ansi
+    ignore_error: true
+
+  run:
+    desc: "Run the playbook"
+    cmds:
+      - |
+        if [[ -n {{.ARGS}} ]]; then
+          ansible-playbook \
+            -i ./ansible/hosts \
+            {{.ARGS}}
+        else
+          ansible-playbook \
+            -i ./ansible/hosts \
+            ./ansible/playbook.yml
+        fi
+
+  run-dev:
+    desc: "Run the playbook with tags and debug"
+    cmds:
+      - |
+        ansible-playbook \
+          -i ./ansible/hosts \
+          {{.ARGS}} \
+          --tags test,qa -vvv
