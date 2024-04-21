@@ -1,7 +1,11 @@
 {
   "default": true,
   "MD013": false,         // line length check
+  "MD022": false,         // headers should be surrounded by blank lines
   "MD026": false,         // trailing punctuation check
+  "MD031": false,         // blanks around fences
+  "MD032": false,         // lists should be surrounded by blank lines
+  "MD036": false,         // emphasis should use asterisks or underscores
   "code-block-style": {
     "style": "fenced"
   },
