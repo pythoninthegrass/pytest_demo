@@ -13,7 +13,7 @@
   "python.analysis.ignore": [
     "*"
   ],
-  "ruff.lint.run": "onType",
+  "ruff.lint.run": "onSave",
   "ruff.organizeImports": true,
   "ruff.showNotifications": "onError"
 }
