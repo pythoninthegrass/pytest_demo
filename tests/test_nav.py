@@ -24,6 +24,6 @@ class TestNav(unittest.TestCase):
     def test_nav(self):
         self.page.goto(url)
         self.page.get_by_role("link", name="Blog").click()
-        self.page.get_by_role("link", name="About").click()
+        self.page.locator("#nav").get_by_role("link", name="About").click()
         self.page.get_by_role("link", name="Contact").click()
-        self.page.get_by_role("link", name="Dummy logotype").click()
+        self.page.locator("#header header").click()
