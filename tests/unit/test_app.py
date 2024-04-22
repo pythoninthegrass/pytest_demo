@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 
 # get repo top-level directory
-tld = Path(__file__).resolve().parent.parent
+tld = Path(__file__).resolve().parents[2]
 
 # add app from `tld / app / app.py`
 sys.path.append(str(tld / "app"))
