@@ -8,6 +8,7 @@
 export SHELL := $(shell which sh)
 export UNAME := $(shell uname -s)
 export ASDF_VERSION := v0.13.1
+export PYTHON_VERSION := 3.11
 
 # check commands and OS
 ifeq ($(UNAME), Darwin)
@@ -86,8 +87,8 @@ git: ## install git
 		echo "git already installed."; \
 		exit 0; \
 	fi
-	if [ "${UNAME}" = "Darwin" ] && [ -n "${BREW}" ]; then \
-		brew install git; \
+	@if [ "${UNAME}" = "Darwin" ] && [ -n "${BREW}" ]; then \
+		brew install git --quiet; \
 	elif [ "${ID}" = "ubuntu" ] || [ "${ID_LIKE}" = "debian" ]; then \
 		sudo apt install -y git; \
 	else \
@@ -95,8 +96,8 @@ git: ## install git
 	fi
 
 python: ## install python
-	if [ "${UNAME}" = "Darwin" ] && [ -n "${BREW}" ]; then \
-		brew install python; \
+	@if [ "${UNAME}" = "Darwin" ] && [ -n "${BREW}" ]; then \
+		brew install python@${PYTHON_VERSION} --quiet; \
 	elif [ "${ID}" = "ubuntu" ] || [ "${ID_LIKE}" = "debian" ]; then \
 		sudo apt install -y python3; \
 	else \
@@ -104,8 +105,8 @@ python: ## install python
 	fi
 
 pip: python ## install pip
-	if [ "${UNAME}" = "Darwin" ] && [ -n "${BREW}" ]; then \
-		brew install pip; \
+	@if [ "${UNAME}" = "Darwin" ] && [ -n "${BREW}" ]; then \
+		echo "pip is already installed via the python brew package"; \
 	elif [ "${ID}" = "ubuntu" ] || [ "${ID_LIKE}" = "debian" ]; then \
 		sudo apt install -y python3-pip; \
 	else \
@@ -118,7 +119,7 @@ pre-commit: pip ## install pre-commit
 		exit 0; \
 	fi
 	@if [ "${UNAME}" = "Darwin" ] && [ -n "${BREW}" ]; then \
-		brew install pre-commit; \
+		brew install pre-commit --quiet; \
 	elif [ "${ID}" = "ubuntu" ] || [ "${ID_LIKE}" = "debian" ]; then \
 		python3 -m pip install pre-commit; \
 	else \
@@ -129,7 +130,7 @@ task: ## install taskfile
 ifeq ($(UNAME), Darwin)
 	@if [ -z "${TASK}" ] && [ ! -z "${BREW}" ]; then \
 		echo "Installing taskfile..."; \
-		brew install go-task; \
+		brew install go-task --quiet; \
 	else \
 		echo "taskfile already installed."; \
 	fi
