@@ -1,6 +1,6 @@
 version: "3.0"
 
-set: ['e', 'u', 'pipefail']
+set: ['e', 'pipefail']
 shopt: ['globstar']
 
 dotenv: ['.env']
@@ -10,14 +10,10 @@ env:
     sh: git rev-parse --show-toplevel
   APP:
     sh: echo "${APP_NAME:-mvp}"
-  POETRY:
-    sh: "echo ${POETRY:-1.7.1}"
-  PY_VER:
-    sh: "echo ${PY_VER:-3.11.6}"
-  SCRIPT:
+  PORT:
+    sh: "echo ${PORT:-8080}"
   UNAME:
     sh: "uname -s"
-
 vars:
 
 includes:
@@ -27,6 +23,9 @@ includes:
   poetry:
     taskfile: ./taskfiles/poetry.yml
     aliases: ["poetry"]
+  playwright:
+    taskfile: ./taskfiles/playwright.yml
+    aliases: ["pw"]
 
 tasks:
   print:
@@ -54,8 +53,25 @@ tasks:
   install:
     desc: "Install project dependencies"
     cmds:
+      - make install
+
+  serve:
+    desc: "Run the server"
+    cmds:
       - |
-        make install
+        case "{{.CLI_ARGS}}" in
+          start)
+            poetry run python server.py start
+            ;;
+          stop)
+            poetry run python server.py stop
+            ;;
+          *)
+            echo "Usage: task serve -- <start|stop>"
+            ;;
+        esac
+    dir: "{{.TLD}}/app"
+    ignore_error: true
 
   lint:
     desc: "Run linters"
@@ -71,22 +87,3 @@ tasks:
     desc: "Run pre-commit hooks"
     cmds:
       - pre-commit run --all-files
-
-  update-deps:
-    desc: "Update dependencies"
-    cmds:
-      - |
-        poetry run poetry up 2>/dev/null
-        poetry update --lock --no-ansi
-
-  export-reqs:
-    desc: "Export requirements.txt"
-    summary: |
-      Export the project dependencies to a requirements.txt file.
-    cmds:
-      - |
-        poetry export -f requirements.txt \
-          --output {{.TLD}}/requirements.txt \
-          --without-hashes \
-          --no-ansi
-    ignore_error: true

@@ -1,0 +1,46 @@
+version: "3.0"
+
+set: ['e', 'pipefail']
+shopt: ['globstar']
+
+tasks:
+  install:
+    desc: "Install playwright drivers"
+    summary: |
+      Install playwright drivers for Chrome, Firefox, and WebKit.
+
+      Default:
+        Install all drivers
+
+      Arguments:
+        chrome:   Install Chrome driver
+        firefox:  Install Firefox driver
+        webkit:   Install WebKit driver
+        --force:  Force install drivers (DANGER: overwrites user Chrome)
+
+      Usage:
+        task playwright:install
+        task playwright:install -- chrome firefox
+        task playwright:install -- --force
+    cmds:
+      - |
+        if [[ -n "{{.CLI_ARGS}}" ]]; then
+          poetry run playwright install {{.CLI_ARGS}}
+        else
+          poetry run playwright install
+        fi
+
+  codegen:
+    desc: "Generate playwright code"
+    cmds:
+      - defer: task serve -- stop
+      - poetry run playwright codegen localhost:${PORT}
+    dir: "{{.TLD}}/tests"
+    silent: true
+    ignore_error: true
+    preconditions:
+      - sh: |
+          pids=$(lsof -i TCP:{{.PORT}} -s TCP:LISTEN -n -P | awk 'NR>1 {print $2}')
+          [ -n "$pids" ] && echo $0
+        msg: |
+          Server not running. Run 'task serve -- start' to start the server

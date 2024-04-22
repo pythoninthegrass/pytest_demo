@@ -4,11 +4,6 @@ set: ['e', 'u', 'pipefail']
 shopt: ['globstar']
 
 tasks:
-  default:
-    desc: "Default task"
-    cmds:
-      - task --list
-
   add-pypi:
     desc: "Add test-pypi repository"
     cmds:
