@@ -15,7 +15,7 @@ ifeq ($(UNAME), Darwin)
 	export XCODE := $(shell xcode-select -p 2>/dev/null)
 	export HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK := 1
 else ifeq ($(UNAME), Linux)
-    include /etc/os-release
+	include /etc/os-release
 endif
 
 export ASDF := $(shell command -v asdf 2>/dev/null)
@@ -35,6 +35,16 @@ RESET := $(shell tput -Txterm sgr0)
 # targets
 .PHONY: all
 all: help asdf xcode brew devbox pre-commit task ## run all targets
+
+define install_package
+	if [ "${UNAME}" = "Darwin" ] && [ -n "${BREW}" ]; then \
+		brew install $(1) --quiet; \
+	elif [ "${ID}" = "ubuntu" ] || [ "${ID_LIKE}" = "debian" ]; then \
+		sudo apt install -y $(1); \
+	else \
+		echo "Uncaught error"; \
+	fi
+endef
 
 xcode: ## install xcode command line tools
 ifeq ($(UNAME), Darwin)
@@ -87,19 +97,13 @@ git: ## install git
 		echo "git already installed."; \
 		exit 0; \
 	fi
-	@if [ "${UNAME}" = "Darwin" ] && [ -n "${BREW}" ]; then \
-		brew install git --quiet; \
-	elif [ "${ID}" = "ubuntu" ] || [ "${ID_LIKE}" = "debian" ]; then \
-		sudo apt install -y git; \
-	else \
-		echo "Uncaught error"; \
-	fi
+	@$(call install_package,git)
 
 python: ## install python
 	@if [ "${UNAME}" = "Darwin" ] && [ -n "${BREW}" ]; then \
-		brew install python@${PYTHON_VERSION} --quiet; \
+		$(call install_package,python@${PYTHON_VERSION}) \
 	elif [ "${ID}" = "ubuntu" ] || [ "${ID_LIKE}" = "debian" ]; then \
-		sudo apt install -y python3; \
+		$(call install_package,python3) \
 	else \
 		echo "Uncaught error"; \
 	fi
@@ -108,7 +112,7 @@ pip: python ## install pip
 	@if [ "${UNAME}" = "Darwin" ] && [ -n "${BREW}" ]; then \
 		echo "pip is already installed via the python brew package"; \
 	elif [ "${ID}" = "ubuntu" ] || [ "${ID_LIKE}" = "debian" ]; then \
-		sudo apt install -y python3-pip; \
+		$(call install_package,python3-pip) \
 	else \
 		echo "Uncaught error"; \
 	fi
@@ -117,33 +121,18 @@ pre-commit: pip ## install pre-commit
 	@if [ -n "${PRE_COMMIT}" ]; then \
 		echo "pre-commit already installed."; \
 		exit 0; \
-	fi
-	@if [ "${UNAME}" = "Darwin" ] && [ -n "${BREW}" ]; then \
-		brew install pre-commit --quiet; \
-	elif [ "${ID}" = "ubuntu" ] || [ "${ID_LIKE}" = "debian" ]; then \
-		python3 -m pip install pre-commit; \
 	else \
-		echo "Uncaught error"; \
+		echo "Installing pre-commit..."; \
+		$(call install_package,pre-commit) \
 	fi
 
 task: ## install taskfile
-ifeq ($(UNAME), Darwin)
-	@if [ -z "${TASK}" ] && [ ! -z "${BREW}" ]; then \
+	@if [ -z "${TASK}" ]; then \
 		echo "Installing taskfile..."; \
-		brew install go-task --quiet; \
+		$(call install_package,go-task); \
 	else \
 		echo "taskfile already installed."; \
 	fi
-else ifeq ($(UNAME), Linux)
-	@if [ -z "${TASK}" ] && [ "${ID_LIKE}" = "debian" ]; then \
-		echo "Installing taskfile..."; \
-		sudo snap install task --classic; \
-	else \
-		echo "taskfile already installed."; \
-	fi
-else
-	@echo "taskfile not supported."
-endif
 
 install: xcode asdf brew devbox pre-commit task ## install dependencies
 
