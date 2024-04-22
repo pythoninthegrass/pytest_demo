@@ -9,11 +9,12 @@ env:
   TLD:
     sh: git rev-parse --show-toplevel
   APP:
-    sh: echo "${APP_NAME:-mvp}"
+    sh: echo "${APP_NAME:-pytest-demo}"
   PORT:
     sh: "echo ${PORT:-8080}"
   UNAME:
     sh: "uname -s"
+
 vars:
 
 includes:

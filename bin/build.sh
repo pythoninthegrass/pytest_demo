@@ -7,10 +7,10 @@
 TLD="$(git rev-parse --show-toplevel)"
 ENV_FILE="${TLD}/app/.env"
 [[ -f "${ENV_FILE}" ]] && export $(grep -v '^#' ${ENV_FILE} | xargs)
-PLATFORM="linux/amd64"
+PLATFORM=${PLATFORM:-linux/amd64}
 REGISTRY=${REGISTRY:-docker.io}
 USER_NAME=${USER_NAME:-pythoninthegrass}
-SERVICE=${SERVICE:-mvp}
+SERVICE=${APP_NAME:-pytest-demo}
 
 # check that buildx is installed
 if ! docker buildx version >/dev/null 2>&1; then

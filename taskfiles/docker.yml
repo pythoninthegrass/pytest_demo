@@ -7,7 +7,8 @@ env:
   BUILD: "{{.TLD}}/bin/build.sh"
   COMPOSE_FILE: "{{.TLD}}/docker-compose.yml"
   DOCKERFILE: "{{.TLD}}/Dockerfile"
-  PLATFORM: "linux/amd64"
+  PLATFORM: "linux/arm64/v8"
+  SERVICE: "pytest-demo"
 
 tasks:
   net:
@@ -24,7 +25,7 @@ tasks:
       - |
         docker volume create \
         --driver local \
-        mvp-vol
+        pytest-demo-vol
 
   build:
     desc: "Build the docker image"

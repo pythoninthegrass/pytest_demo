@@ -2,19 +2,21 @@ version: "3"
 
 services:
   app:
-    container_name: mvp-app
-    hostname: mvp
-    platform: linux/amd64             # linux/amd64 / linux/arm64/v8
-    tty: true                         # false for `entrypoint` in Dockerfile
-    stdin_open: true                  # false for `entrypoint` in Dockerfile
+    container_name: pytest-demo
     build:
       context: ./
       dockerfile: ./Dockerfile
       args:
         - DEBIAN_FRONTEND=noninteractive
+    hostname: pytest-demo
+    platform: linux/arm64/v8          # linux/amd64 / linux/arm64/v8
+    tty: true                         # false for `entrypoint` in Dockerfile
+    stdin_open: true                  # false for `entrypoint` in Dockerfile
+    env_file:
+      - .env
     ports:
-      - "8000:8000/tcp"
       - "8080:8080/tcp"
     volumes:
-      - ./:/app
+      - ./app:/app
     working_dir: /app
+    command: ["python3", "server.py", "start"]
