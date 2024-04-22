@@ -86,7 +86,9 @@ task: Available tasks for this project:
 * install:                  Install project dependencies
 * lint:                     Run linters
 * pre-commit:               Run pre-commit hooks
+* pyclean:                  Remove .pyc and __pycache__
 * serve:                    Run the server
+* test:                     Run tests
 * docker:build:             Build the docker image                                                     (aliases: docker:build)
 * docker:down:              Stop and remove containers, networks, and volumes with docker compose      (aliases: docker:down)
 * docker:exec:              Shell into a running container                                             (aliases: docker:exec)
@@ -106,7 +108,7 @@ task: Available tasks for this project:
 * poetry:export-reqs:       Export requirements.txt                                                    (aliases: poetry:export-reqs)
 * poetry:install:           Install project dependencies                                               (aliases: poetry:install)
 * poetry:publish:           Publish the poetry bin                                                     (aliases: poetry:publish)
-* poetry:update-deps:       Update dependencies                                                        (aliases: poetry:update-deps)                                                    (aliases: poetry:update-deps)
+* poetry:update-deps:       Update dependencies                                                        (aliases: poetry:update-deps)                                           (aliases: poetry:update-deps)                                                    (aliases: poetry:update-deps)
 ```
 
 ## TODO
