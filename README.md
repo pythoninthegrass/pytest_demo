@@ -1,7 +1,9 @@
 # pytest_demo
 
 ## Summary
-This is a demo project to show how to use pytest with a python project.
+This is a demo project to show how to use
+[pytest](https://docs.pytest.org/en/8.0.x/) with a
+[flask](https://flask.palletsprojects.com/en/3.0.x/) project.
 
 **Table of Contents**
 * [pytest\_demo](#pytest_demo)
@@ -9,6 +11,10 @@ This is a demo project to show how to use pytest with a python project.
   * [Setup](#setup)
     * [Minimum requirements](#minimum-requirements)
     * [Recommended requirements](#recommended-requirements)
+  * [Running tests](#running-tests)
+    * [Start server](#start-server)
+    * [Run test(s)](#run-tests)
+    * [Stop server](#stop-server)
   * [Development](#development)
     * [Makefile](#makefile)
     * [Taskfile](#taskfile)
@@ -23,10 +29,42 @@ This is a demo project to show how to use pytest with a python project.
     * [Linux](https://www.gnu.org/software/make/)
     * [macOS](https://www.freecodecamp.org/news/install-xcode-command-line-tools/)
   * [editorconfig](https://editorconfig.org/)
-  * [wsl](https://docs.microsoft.com/en-us/windows/wsl/setup/environment)
+  * [wsl](https://docs.microsoft.com/en-us/windows/wsl/setup/environment) [Windows-only]
 
 ### Recommended requirements
 * [task](https://taskfile.dev/#/installation)
+
+## Running tests
+### Start server
+```bash
+# standalone server
+./app/server.py start
+
+# taskfile
+task serve -- start
+```
+### Run test(s)
+```bash
+# all tests
+pytest
+
+# fuzzy search (can match multiple tests/files)
+pytest -k app
+
+# specific file
+pytest tests/unit/test_app.py
+
+# specific test
+pytest tests/unit/test_app.py::test_index
+```
+### Stop server
+```bash
+# standalone server
+./app/server.py stop
+
+# taskfile
+task serve -- stop
+```
 
 ## Development
 ### Makefile
@@ -44,12 +82,11 @@ make <xcode|asdf|brew|devbox|pre-commit|task>
 task: [default] task --list
 task: Available tasks for this project:
 * default:                  Default task
-* export-reqs:              Export requirements.txt
 * format:                   Run formatters
 * install:                  Install project dependencies
 * lint:                     Run linters
 * pre-commit:               Run pre-commit hooks
-* update-deps:              Update dependencies
+* serve:                    Run the server
 * docker:build:             Build the docker image                                                     (aliases: docker:build)
 * docker:down:              Stop and remove containers, networks, and volumes with docker compose      (aliases: docker:down)
 * docker:exec:              Shell into a running container                                             (aliases: docker:exec)
@@ -61,14 +98,15 @@ task: Available tasks for this project:
 * docker:stop:              Stop the project with docker compose                                       (aliases: docker:stop)
 * docker:up:                Start the project with docker compose                                      (aliases: docker:up)
 * docker:vol:               Create docker volume                                                       (aliases: docker:vol)
+* playwright:codegen:       Generate playwright code                                                   (aliases: pw:codegen)
+* playwright:install:       Install playwright drivers                                                 (aliases: pw:install)
 * poetry:add-pypi:          Add test-pypi repository                                                   (aliases: poetry:add-pypi)
 * poetry:build:             Build the poetry bin                                                       (aliases: poetry:build)
 * poetry:bump-semver:       Bump the project semantic version                                          (aliases: poetry:bump-semver)
-* poetry:default:           Default task                                                               (aliases: poetry:default, poetry, poetry)
 * poetry:export-reqs:       Export requirements.txt                                                    (aliases: poetry:export-reqs)
 * poetry:install:           Install project dependencies                                               (aliases: poetry:install)
 * poetry:publish:           Publish the poetry bin                                                     (aliases: poetry:publish)
-* poetry:update-deps:       Update dependencies                                                        (aliases: poetry:update-deps)
+* poetry:update-deps:       Update dependencies                                                        (aliases: poetry:update-deps)                                                    (aliases: poetry:update-deps)
 ```
 
 ## TODO
