@@ -1,6 +1,15 @@
 {
   "default": true,
-  "MD013": false,         // line length check
+  "MD009": true,          // trailing spaces
+  // line length check
+  "MD013": {
+    "headings": false,
+    "heading_line_length": 80,
+    "line_length": 300,
+    "code_blocks": false,
+    "code_block_line_length": 300,
+    "tables": false
+  },
   "MD022": false,         // headers should be surrounded by blank lines
   "MD026": false,         // trailing punctuation check
   "MD031": false,         // blanks around fences
