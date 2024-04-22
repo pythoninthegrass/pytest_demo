@@ -83,6 +83,30 @@ tasks:
     cmds:
       - poetry run ruff format --respect-gitignore
 
+  test:
+    desc: "Run tests"
+    cmds:
+      - poetry run pytest
+
+  pyclean:
+    desc: "Remove .pyc and __pycache__"
+    cmds:
+      - |
+        args=(
+          .
+          --debris
+          --verbose
+          -i .devbox
+        )
+        case "{{.CLI_ARGS}}" in
+          dry-run)
+            poetry run pyclean "${args[@]}" --dry-run
+            ;;
+          *)
+            poetry run pyclean "${args[@]}"
+            ;;
+        esac
+
   pre-commit:
     desc: "Run pre-commit hooks"
     cmds:
