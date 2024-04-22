@@ -1,8 +1,9 @@
 # ETC
-*.sqlite
 !*.example
-*.pem
 .ruff*
+*.pem
+*.sqlite
+**/.auth/state.json
 tilt-example-python/
 
 # Byte-compiled / optimized / DLL files
