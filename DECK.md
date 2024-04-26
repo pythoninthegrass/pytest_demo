@@ -23,17 +23,32 @@ Lance Stephens
 
 ---
 
-## Agenda CTD
+## Table of Contents
 
-* What is pytest?
-* Why pytest?
-* Unit tests
-* Integration tests
-* Mocking
-* Fixtures
-* Demo
-* Q&A
-* Sources
+* [How to write tests with pytest](#how-to-write-tests-with-pytest)
+  * [`whoami`](#whoami)
+  * [Agenda](#agenda)
+  * [Table of Contents](#table-of-contents)
+  * [What is pytest? ^1](#what-is-pytest-1)
+    * [Features](#features)
+  * [Why pytest?](#why-pytest)
+  * [Wildly detailed overview by somebody else ^2](#wildly-detailed-overview-by-somebody-else-2)
+  * [Somewhat less detailed overview for humans](#somewhat-less-detailed-overview-for-humans)
+  * [Unit tests](#unit-tests)
+  * [Unit tests CTD](#unit-tests-ctd)
+    * [unittest example](#unittest-example)
+    * [pytest example](#pytest-example)
+    * [Mocking](#mocking)
+      * [unittest example](#unittest-example-1)
+      * [pytest example](#pytest-example-1)
+    * [Fixtures](#fixtures)
+  * [Integration tests](#integration-tests)
+  * [Integration tests CTD](#integration-tests-ctd)
+  * [Demo](#demo)
+  * [Q\&A](#qa)
+  * [Thank you!](#thank-you)
+  * [Sources](#sources)
+  * [Further Reading](#further-reading)
 
 ## What is pytest? [^1]
 
