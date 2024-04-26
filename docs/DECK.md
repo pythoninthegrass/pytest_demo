@@ -317,4 +317,5 @@ Questions?
 * [Full pytest documentation](https://docs.pytest.org/en/8.1.x/contents.html)
 * [Real Python: Python Testing](https://realpython.com/python-testing/)
 * [The Testing Pyramid: How to Structure Your Test Suite - Semaphore](https://semaphoreci.com/blog/testing-pyramid)
+* [Pytest Fixtures: Your Secret Weapon for Writing Powerful Tests](https://blog.devgenius.io/pytest-fixtures-your-secret-weapon-for-writing-powerful-tests-5d854a01d4a6)
 * [Playwright Python](https://playwright.dev/python/docs/intro)
