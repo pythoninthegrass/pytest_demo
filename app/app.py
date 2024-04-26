@@ -19,9 +19,7 @@ from flask_flatpages import (
     pygmented_markdown,
     pygments_style_defs,
 )
-from flask_flatpages.utils import pygmented_markdown
 from flask_mail import Mail, Message
-from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from models.paginate import Paginate as Paginate
 from models.forms import ContactForm as ContactForm
@@ -29,15 +27,10 @@ from pathlib import Path
 from wtforms import PasswordField, StringField
 from wtforms.validators import InputRequired
 
-# env vars
-SQLALCHEMY_DATABASE_URI = config('DATABASE_URL')
-SECRET_KEY = config('SECRET_KEY')
 
 def my_markdown(text):
     markdown_text = render_template_string(text)
-    pygmented_text = markdown.markdown(markdown_text, extensions=["codehilite",
-                                                                  "fenced_code",
-                                                                  "tables"])
+    pygmented_text = markdown.markdown(markdown_text, extensions=["codehilite", "fenced_code", "tables"])
     return pygmented_text
 
 
@@ -47,35 +40,8 @@ app.config.from_object("config_public")
 app.config['FLATPAGES_HTML_RENDERER'] = my_markdown
 pages = FlatPages(app)
 
-# config
-app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
-
 # cors
 CORS(app, resources={r"/api/*": {"origins": "*"}})
-
-# db
-db = SQLAlchemy(app)
-
-
-class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[InputRequired()])
-    password = PasswordField('Password', validators=[InputRequired()])
-
-
-class SignupForm(FlaskForm):
-    username = StringField('Username', validators=[InputRequired()])
-    password = PasswordField('Password', validators=[InputRequired()])
-
-
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    password = db.Column(db.String(120), nullable=False)
-
-
-if not Path('instance/users.db').exists():
-    with app.app_context():
-        db.create_all()
 
 
 @app.errorhandler(404)

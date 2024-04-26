@@ -3,10 +3,7 @@
 import pytest
 import re
 import unittest
-from conftest import (
-    url,
-    abs_storage,
-)
+from conftest import url, abs_storage
 
 
 class TestNav(unittest.TestCase):
