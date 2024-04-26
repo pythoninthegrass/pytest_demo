@@ -81,10 +81,6 @@ A unit is the smallest testable part of an application. In procedural programmin
 
 [unittest](https://docs.python.org/3/library/unittest.html) is Python's built-in testing framework.
 
-<!-- > The unittest unit testing framework was originally inspired by JUnit and has a similar flavor as major unit testing frameworks in other languages.
->
-> It supports test automation, sharing of setup and shutdown code for tests, aggregation of tests into collections, and independence of the tests from the reporting framework. -->
-
 ---
 
 ## Unit tests CTD
@@ -142,9 +138,7 @@ def test_split():
 
 ### Mocking
 
->  In object-oriented programming, a mock object is an object that simulates the behavior of a production code object in limited ways.
-<!-- >  -->
-<!-- > A programmer often uses a mock object to test the behavior of a production object. -->
+> In object-oriented programming, a mock object is an object that simulates the behavior of a production code object in limited ways.
 
 ---
 
@@ -184,10 +178,6 @@ def test_method(monkeypatch):
 ### Fixtures
 
 > In testing, a fixture provides a defined, reliable and consistent context for the tests. This could include environment (for example a database configured with known parameters) or content (such as a dataset).
-<!-- >
-> Fixtures define the steps and data that constitute the arrange phase of a test ... In pytest, they are functions you define that serve this purpose. They can also be used to define a test’s act phase; this is a powerful technique for designing more complex tests.
->
-> The services, state, or other operating environments set up by fixtures are accessed by test functions through arguments. For each fixture used by a test function there is typically a parameter (named after the fixture) in the test function’s definition. -->
 
 **Exhibit C** [^7]
 ```python
@@ -216,11 +206,7 @@ def test_my_fruit_in_basket(my_fruit, fruit_basket):
 
 ## Integration tests
 
-<!-- > Integration testing is the phase in software testing in which the whole software module is tested. -->
-<!-- >  -->
 > Integration testing takes as its input modules that have been unit tested ... It occurs after unit testing and before system testing. [^8]
-<!-- >  -->
-<!-- > , groups them in larger aggregates, applies tests defined in an integration test plan to those aggregates, and delivers as its output the integrated system ready for system testing. [^8] -->
 
 ---
 
